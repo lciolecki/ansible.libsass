@@ -3,6 +3,7 @@
 #Instruction from:
 # - http://askubuntu.com/questions/566675/how-to-install-node-sass-gulp-sass-on-ubuntu-14-04-or-linux-mint-17
 # - https://gist.github.com/edouard-lopez/503d40a5c1a49cf8ae87
+# - http://mattferderer.com/compile-sass-with-sassc-and-libsass/
 
 - name: Clone libsass repository
   sudo: yes
@@ -28,6 +29,17 @@
     - git
     - sassc
 
+#- name: Export SASS_LIBSASS_PATH
+#  lineinfile: >
+#    dest="/etc/environment"
+#    regexp='export SASS_LIBSASS_PATH'
+#    line='export SASS_LIBSASS_PATH={{ libsass_path }}'
+#    state=present
+#    backup=yes
+#    create=yes
+#  tags:
+#    - libsass
+
 - name: Create configure script libsass
   sudo: yes
   shell: "autoreconf {{ libsass_path }} --force --install"
@@ -47,6 +59,8 @@
 - name: Install the library libsass
   sudo: yes
   shell: "make -C {{ libsass_path }} -j5 install"
+  environment:
+    SASS_LIBSASS_PATH: "{{ libsass_path }}"
   tags:
     - make
     - install
@@ -62,6 +76,8 @@
 - name: Build the library sassc
   sudo: yes
   shell: "make -C {{ sassc_path }} -j5"
+  environment:
+    SASS_LIBSASS_PATH: "{{ libsass_path }}"
   tags:
     - make
     - sassc

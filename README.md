@@ -1,6 +1,12 @@
 Ansible role for install libsass / sassc
 ========================================
 
+Installation and configuration by:
+
+* [http://askubuntu.com/questions/566675/how-to-install-node-sass-gulp-sass-on-ubuntu-14-04-or-linux-mint-17](http://askubuntu.com/questions/566675/how-to-install-node-sass-gulp-sass-on-ubuntu-14-04-or-linux-mint-17)
+* [https://gist.github.com/edouard-lopez/503d40a5c1a49cf8ae87](https://gist.github.com/edouard-lopez/503d40a5c1a49cf8ae87)
+* [http://mattferderer.com/compile-sass-with-sassc-and-libsass](http://mattferderer.com/compile-sass-with-sassc-and-libsass)
+
 Installation methods
 --------------------
 * Binary packages from the github repository (role name: ansible.libsass)
