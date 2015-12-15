@@ -1,0 +1,14 @@
+---
+
+- name: Update APT cache
+  sudo: yes
+  apt: update_cache=yes
+
+- name: Install require dependencies
+  sudo: yes
+  apt: "pkg={{ item }} state=present"
+  with_items:
+    - build-essential
+    - automake
+    - libtool
+    - git

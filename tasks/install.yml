@@ -1,0 +1,77 @@
+---
+
+#Instruction from:
+# - http://askubuntu.com/questions/566675/how-to-install-node-sass-gulp-sass-on-ubuntu-14-04-or-linux-mint-17
+# - https://gist.github.com/edouard-lopez/503d40a5c1a49cf8ae87
+
+- name: Clone libsass repository
+  sudo: yes
+  git:
+    repo: https://github.com/sass/libsass.git
+    dest: "{{ libsass_path }}"
+    version: "{{ libssas_version }}"
+    force: yes
+    depth: 1
+  tags:
+    - git
+    - libsass
+
+- name: Clone saasc repository
+  sudo: yes
+  git:
+    repo: https://github.com/sass/sassc.git
+    dest: "{{ sassc_path }}"
+    version: "{{ sassc_version }}"
+    force: yes
+    depth: 1
+  tags:
+    - git
+    - sassc
+
+- name: Create configure script libsass
+  sudo: yes
+  shell: "autoreconf {{ libsass_path }} --force --install"
+  tags:
+    - autoreconf
+    - libsass
+
+- name: Build the library libsass
+  sudo: yes
+  shell: "make -C {{ libsass_path }} -j5"
+  environment:
+    SASS_LIBSASS_PATH: "{{ libsass_path }}"
+  tags:
+    - make
+    - libsass
+
+- name: Install the library libsass
+  sudo: yes
+  shell: "make -C {{ libsass_path }} -j5 install"
+  tags:
+    - make
+    - install
+    - libsass
+
+- name: Create configure script sassc
+  sudo: yes
+  shell: "autoreconf {{ sassc_path }} --force --install"
+  tags:
+    - autoreconf
+    - sassc
+
+- name: Build the library sassc
+  sudo: yes
+  shell: "make -C {{ sassc_path }} -j5"
+  tags:
+    - make
+    - sassc
+
+- name: Create symbolic link to sassc
+  sudo: yes
+  file:
+    src: "{{ sassc_path }}/bin/sassc"
+    dest: "/usr/bin/sassc"
+    state: link
+  tags:
+    - symlinks
+    - sassc
