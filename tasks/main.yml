@@ -1,6 +1,13 @@
 ---
 
+- name: Check if the sassc/libsass version is already installed
+  command: sassc --version
+  ignore_errors: yes
+  register: versions
+  changed_when: "versions.rc != 0 or 'sassc: {{ sassc_version }}' not in versions.stdout or 'libsass: {{ libssas_version }}' not in versions.stdout"
+
 - include: configure.yml
+  when: versions.changed
 
 - include: install.yml
-
+  when: versions.changed
