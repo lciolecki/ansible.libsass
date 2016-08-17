@@ -29,17 +29,6 @@
     - git
     - sassc
 
-#- name: Export SASS_LIBSASS_PATH
-#  lineinfile: >
-#    dest="/etc/environment"
-#    regexp='export SASS_LIBSASS_PATH'
-#    line='export SASS_LIBSASS_PATH={{ libsass_path }}'
-#    state=present
-#    backup=yes
-#    create=yes
-#  tags:
-#    - libsass
-
 - name: Create configure script libsass
   sudo: yes
   shell: "autoreconf {{ libsass_path }} --force --install"
@@ -49,7 +38,7 @@
 
 - name: Build the library libsass
   sudo: yes
-  shell: "make -C {{ libsass_path }} -j5"
+  shell: "make -C {{ libsass_path }}"
   environment:
     SASS_LIBSASS_PATH: "{{ libsass_path }}"
   tags:
@@ -58,7 +47,7 @@
 
 - name: Install the library libsass
   sudo: yes
-  shell: "make -C {{ libsass_path }} -j5 install"
+  shell: "make -C {{ libsass_path }} install"
   environment:
     SASS_LIBSASS_PATH: "{{ libsass_path }}"
   tags:
@@ -75,7 +64,7 @@
 
 - name: Build the library sassc
   sudo: yes
-  shell: "make -C {{ sassc_path }} -j5"
+  shell: "make -C {{ sassc_path }}"
   environment:
     SASS_LIBSASS_PATH: "{{ libsass_path }}"
   tags:
